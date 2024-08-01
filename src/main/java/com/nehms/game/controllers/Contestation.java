@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import com.nehms.game.entities.Card;
@@ -29,7 +28,7 @@ public class Contestation {
 
                     gameSession.setCurrentMessage("");
 
-                    contradict(gameSession.getPlayers().get(getIndex(gameSession)),
+                    contestPlayer(gameSession.getPlayers().get(getIndex(gameSession)),
                             gameSession.getPlayers().get(gameSession.getIndexplayers()), gameSession.getCurrentcard(),
                             gameSession.getCurrentPattern(), gameSession.getGameTable(),
                             gameSession.getSocketSessions());
@@ -101,7 +100,7 @@ public class Contestation {
         return (gameSession.getCurrentindexOfsessionCard() - 1) != getIndex(gameSession);
     }
 
-    public void contradict(Player contestPlayer, Player player, Card currentCard, Pattern pattern,
+    public void contestPlayer(Player contestPlayer, Player player, Card currentCard, Pattern pattern,
                            List<Card> cardsPlayed, List<WebSocketSession> list) {
 
         BrosdCast brosdCast = new BrosdCast();

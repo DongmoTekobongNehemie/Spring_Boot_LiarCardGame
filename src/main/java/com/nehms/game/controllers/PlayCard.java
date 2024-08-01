@@ -7,8 +7,8 @@ import org.springframework.web.socket.TextMessage;
 
 import com.nehms.game.entities.Card;
 import com.nehms.game.entities.GameSession;
-import com.nehms.game.entities.Pattern;
 import com.nehms.game.entities.GameStep;
+import com.nehms.game.entities.Pattern;
 import com.nehms.game.entities.Player;
 
 public class PlayCard {

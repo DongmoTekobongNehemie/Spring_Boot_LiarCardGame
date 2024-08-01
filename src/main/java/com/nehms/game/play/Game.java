@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import com.nehms.game.controllers.Ochestrater;
+import com.nehms.game.controllers.interfaces.Ochestrater;
 import com.nehms.game.entities.GameSession;
 import com.nehms.game.exceptions.GameSessionNullException;
 import com.nehms.game.services.ProcessAskOkToPlay;

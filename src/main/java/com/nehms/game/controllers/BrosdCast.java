@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-public final class BrosdCast {
+import com.nehms.game.controllers.interfaces.Brosdcastable;
+
+public final class BrosdCast implements  Brosdcastable {
 	
 	public void broadcastMessage(String message, List<WebSocketSession> sessions) {
 		for (WebSocketSession session : sessions) {

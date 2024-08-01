@@ -1,10 +1,12 @@
 package com.nehms.game.controllers;
 
+import com.nehms.game.controllers.interfaces.Processable;
 import com.nehms.game.entities.Pattern;
 import com.nehms.game.entities.ProcessMessage;
 
-public class MessageProcessor {
+public class MessageProcessor implements Processable{
 
+	@Override
 	public ProcessMessage processingMessage(String message) {
 
 		ProcessMessage processMessage = new ProcessMessage();

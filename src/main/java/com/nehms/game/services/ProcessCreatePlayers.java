@@ -2,8 +2,8 @@ package com.nehms.game.services;
 
 import java.io.IOException;
 
-import com.nehms.game.controllers.Ochestrater;
 import com.nehms.game.controllers.PlayerCreator;
+import com.nehms.game.controllers.interfaces.Ochestrater;
 import com.nehms.game.entities.GameSession;
 import com.nehms.game.exceptions.GameSessionNullException;
 

@@ -12,7 +12,6 @@ import com.nehms.game.entities.Player;
 @Component
 public class PlayerCreator {
 
-
 	public void createPlayers(GameSession gameSession) throws IOException{
 		
 		BrosdCast brosdCast = new  BrosdCast();
