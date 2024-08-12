@@ -25,10 +25,13 @@ public class Card {
 		Card other = (Card) obj;
 		return Objects.equals(number, other.number) && pattern == other.pattern;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(number, pattern);
 	}
+
+	
+	
 
 }

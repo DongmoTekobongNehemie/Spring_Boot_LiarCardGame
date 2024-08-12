@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://kit.fontawesome.com/77ea708116.js" crossorigin="anonymous"></script>
+	<title>LiarCardGame</title>
+</head>
+
+<body>
+
+	<nav>
+		<div class="logo">LairCardGame</div>
+
+		<div class="search">
+			<form>
+
+				<span class="namePlayer">
+					<p id="name">Joueur 1</p>
+				</span>
+
+				<div class="select-container">
+					<select class="select-box">
+						<option value="COEUR">Coeur</option>
+						<option value="PIQUE">Pique</option>
+						<option value="TREFLE">Trefle</option>
+						<option value="CARREAU">Carreau</option>
+					</select>
+
+					<div class="icon-container">
+						<i class="fa-solid fa-sort-down"></i>
+					</div>
+				</div>
+				<button onclick="gameplay(event)">Play ♠️ </button>
+
+
+			</form>
+		</div>
+	</nav>
+
+	<div class="main">
+
+		<div class="cardsBox">
+			<div class="list">
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="/images/poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+				<div class="card">
+					<input type="radio" name="carte" class="valid">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="pattern">Pique</p>
+					<p class="numero">2</p>
+				</div>
+
+				<!-- Ajouter des cartes -->
+
+			</div>
+		</div>
+
+		<div class="currnetCard">
+			<div class="cardplay">
+				<img src="\images\poker.png" alt="" class="ing">
+				<p class="patternofcardplay" id="patternofcardplay">Pique</p>
+				<p class="numeroofcardplay" id="numeroofcardplay">2</p>
+			</div>
+
+			<span class="badgePattern">
+				<p id="badgePattern">Pique</p>
+			</span>
+		</div>
+	</div>
+
+	<div id="toastBox"></div>
+
+
+
+	<script src="/javascript/script.js"></script>
+
+</body>
+
+</html>

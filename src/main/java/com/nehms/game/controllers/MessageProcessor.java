@@ -15,11 +15,13 @@ public class MessageProcessor implements Processable{
 
 		if (message.contains("-")) {
 			reponse = message.trim().split("-");
-			if (reponse.length == 2) {
+			if (reponse.length == 3) {
 				try {
-					processMessage.setNumber(Integer.parseInt(reponse[0]));
+					processMessage.setNumber((reponse[0]).trim());
 
-					processMessage.setPattern(Pattern.valueOf(reponse[1].toUpperCase()));
+					processMessage.setPattern(Pattern.valueOf(reponse[1].toUpperCase().trim()));
+					
+					processMessage.setPatternPlay(Pattern.valueOf(reponse[2].toUpperCase().trim()));
 					return processMessage;
 				} catch (Exception e) {
 					return null;

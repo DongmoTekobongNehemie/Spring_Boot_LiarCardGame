@@ -31,6 +31,7 @@ public class GameSession {
 	private boolean okToPlay;
 	private int nbreTour;
 	private int indexplayers;
+	private String message;
 
 	public GameSession() {
 		
@@ -52,7 +53,7 @@ public class GameSession {
 		this.setOkToPlay(false);
 		this.nbreTour=0;
 		this.indexplayers=0;
-		
+		this.setMessage("");
 	}
 
 }

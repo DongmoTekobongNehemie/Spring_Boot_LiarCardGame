@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter 
+@Getter 
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProcessMessage {
 	
-	private int number;
+	private String number;
 	private Pattern pattern;
+	private Pattern patternPlay;
 	
 }

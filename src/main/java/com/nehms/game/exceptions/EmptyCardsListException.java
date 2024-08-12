@@ -3,7 +3,7 @@ package com.nehms.game.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter 
+@Getter
 @Setter
 public class EmptyCardsListException extends Exception {
 

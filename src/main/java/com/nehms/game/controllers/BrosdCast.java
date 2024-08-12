@@ -7,9 +7,11 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.nehms.game.controllers.interfaces.Brosdcastable;
+import com.nehms.game.entities.Card;
 
 public final class BrosdCast implements  Brosdcastable {
 	
+	@Override
 	public void broadcastMessage(String message, List<WebSocketSession> sessions) {
 		for (WebSocketSession session : sessions) {
 			if (session.isOpen()) {
@@ -18,6 +20,17 @@ public final class BrosdCast implements  Brosdcastable {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+
+	@Override
+	public void broadCastCards(List<Card> cards, WebSocketSession session) {
+		for (Card card : cards) {
+			try {
+				session.sendMessage(new TextMessage("Vos cartes "+card.toString()));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

@@ -19,11 +19,13 @@ public class Communication extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		game.play(session, null);
+	
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		game.play(session, message);
 	}
+	
 
 }
