@@ -2,6 +2,8 @@ package com.nehms.game.entities;
 
 import java.util.List;
 
+import org.springframework.web.socket.WebSocketSession;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +21,6 @@ public class Message {
 	private List<Card> cards;
 	private Card currentCard;
 	private Pattern currentPattern;
+	private List<WebSocketSession> sessions;
 	
 }

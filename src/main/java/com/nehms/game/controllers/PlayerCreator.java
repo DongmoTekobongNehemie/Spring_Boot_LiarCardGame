@@ -1,8 +1,10 @@
 package com.nehms.game.controllers;
 
 import java.io.IOException;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
+
 import com.nehms.game.entities.GameSession;
 import com.nehms.game.entities.GameStep;
 import com.nehms.game.entities.Message;
@@ -12,6 +14,7 @@ import com.nehms.game.entities.Player;
 public class PlayerCreator {
 
 	public void createPlayers(GameSession gameSession) throws IOException {
+		
 
 		BrosdCast brosdCast = new BrosdCast();
 
@@ -19,7 +22,7 @@ public class PlayerCreator {
 
 		Jsonation jsonation = new Jsonation();
 
-		if (gameSession.getGameStep().equals(GameStep.CREATE_PLAYER)) {
+		if (gameSession.getGameStep().equals(GameStep.CREATE_PLAYER) ) {
 
 			Player player = new Player("Player " + (gameSession.getPlayers().size() + 1));
 
@@ -29,7 +32,7 @@ public class PlayerCreator {
 					&& gameSession.getPlayers().size() < gameSession.getMaxPlayer()) {
 
 				gameSession.getPlayers().add(player);
-
+				
 				gameSession.getSocketSessions().add(gameSession.getCurrentSession());
 
 				objectResponse.setBody("Bienvenue "
@@ -63,6 +66,7 @@ public class PlayerCreator {
 			gameSession.getCurrentSession().sendMessage(new TextMessage("The session game it's full !!"));
 			gameSession.getCurrentSession().close();
 		}
+			
 	}
 
 }

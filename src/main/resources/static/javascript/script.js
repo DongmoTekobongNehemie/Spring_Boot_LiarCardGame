@@ -44,12 +44,13 @@ socket.onmessage = function(event) {
 		let actuellemt_le_tour = '<i class="fa-regular fa-circle-check"></i>\n' + message.body;
 		let prend_les_cartes = '<i class="fa-light fa-face-smile-tongue"></i>\n' + message.body;
 		let gagnant = '<i class="fa-solid fa-party-horn" style="color: #74C0FC;"></i>\n' + message.body;
+		let reset = '<i class="fa-solid fa-party-horn" style="color: #74C0FC;"></i>\n' + message.body;
 
 
 
 
 
-		if (message.type == "creation de joueur") {
+		if (message.type == "creation de joueur" || message.type=="changement d'identifiant") {
 			document.getElementById("name").textContent = message.namePlayer;
 			showToast(creation_de_joueur);
 		}
@@ -69,6 +70,10 @@ socket.onmessage = function(event) {
 		if (message.type == "bonne chance") {
 			showToast(bonne_chance);
 		}
+		
+		if (message.type == "Reset") {
+					showToast(reset);
+				}
 
 		if (message.type == "a toi") {
 			showToast(a_toi);
@@ -106,6 +111,8 @@ socket.onmessage = function(event) {
 		if (message.type == "perosnne ne conteste") {
 			showToast(perosnne_ne_conteste);
 		}
+		
+		
 
 
 		if (message.type == "prend les cartes") {
@@ -172,7 +179,6 @@ socket.onmessage = function(event) {
 				document.getElementById("badgePattern").textContent = message.currentPattern;
 
 			}
-
 		}
 
 	} catch (e) {
@@ -229,6 +235,7 @@ function gameplay(event) {
 		console.log('Aucune carte sélectionnée.');
 	}
 }
+
 
 
    

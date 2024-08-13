@@ -3,7 +3,9 @@ package com.nehms.game.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
 
+@Data
 public class Player {
 	
 	private String namePlayer;

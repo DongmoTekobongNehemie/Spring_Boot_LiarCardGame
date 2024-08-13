@@ -24,8 +24,7 @@ public class ProcessCreatePlayers implements Ochestrater {
 		}
 		
 		PlayerCreator playerCreator = new PlayerCreator();
-		playerCreator.createPlayers(gameSession);
-	
+		playerCreator.createPlayers(gameSession);		
 	
 	}
 
