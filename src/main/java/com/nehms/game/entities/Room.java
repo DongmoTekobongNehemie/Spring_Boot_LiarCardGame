@@ -1,8 +1,6 @@
 package com.nehms.game.entities;
 
-import jakarta.persistence.Entity;
-
-@Entity
+//@Entity
 public class Room {
 
 	private int roomId;
