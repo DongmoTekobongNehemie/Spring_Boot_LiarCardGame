@@ -2,7 +2,7 @@
 
 
 // Créez une nouvelle connexion WebSocket.
-let socket = new WebSocket("https://liarcardgame.onrender.com");
+let socket = new WebSocket("https://liarcardgame.onrender.com/game");
 
 // Fonction appelée lors de l'ouverture de la connexion WebSocket.
 socket.onopen = function(event) {
