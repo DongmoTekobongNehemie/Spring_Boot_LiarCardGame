@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/acceuil_style.css">
+	<script src="https://kit.fontawesome.com/77ea708116.js" crossorigin="anonymous"></script>
+
+	<title>Two Column Layout</title>
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="joinRoom">
+			<form>
+				<input type="text" class="inputKey" id="inputKey" placeholder="enter the room key">
+				<button class="btn-join" onclick="findRoom()"> Join Room </button>
+			</form>
+		</div>
+
+		<div class="createRoom">
+			<button class="btn-createRoom" onclick="createRoom()">Create Room</button>
+
+			<span>
+				<p>Your Room Key:</p>
+			</span>
+
+			<span class="badge" id="roomKeyDisplay"><img class="share" src="/images/share.png"></span>
+		</div>
+
+	</div>
+
+	<script src="/javascript/room.js"></script>
+
+</body>
+
+</html>

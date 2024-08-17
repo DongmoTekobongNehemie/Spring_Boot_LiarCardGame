@@ -5,8 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-    @GetMapping("/game/play")
+//	@GetMapping("/game/play")
+//    public String game() {
+//        return "game"; 
+//    }
+//	
+	
+	@GetMapping("/liarGameRoom")
     public String game() {
-        return "game"; 
+        return "acceuil"; 
     }
+	
 }

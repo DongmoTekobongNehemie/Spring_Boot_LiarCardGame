@@ -1,8 +1,8 @@
 package com.nehms.game.controllers;
 
 import com.nehms.game.controllers.interfaces.Processable;
-import com.nehms.game.entities.Pattern;
-import com.nehms.game.entities.ProcessMessage;
+import com.nehms.game.entites.Pattern;
+import com.nehms.game.entites.ProcessMessage;
 
 public class MessageProcessor implements Processable{
 

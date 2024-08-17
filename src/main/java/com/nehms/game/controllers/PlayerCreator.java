@@ -5,10 +5,10 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 
-import com.nehms.game.entities.GameSession;
-import com.nehms.game.entities.GameStep;
-import com.nehms.game.entities.Message;
-import com.nehms.game.entities.Player;
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.GameStep;
+import com.nehms.game.entites.Message;
+import com.nehms.game.entites.Player;
 
 @Component
 public class PlayerCreator {
@@ -44,8 +44,8 @@ public class PlayerCreator {
 				
 				objectResponse.setType("");
 				
-				//System.out.println("Nous avons un nouveau joueur la liste des connection est a : "
-					//	+ gameSession.getSocketSessions().size());
+				System.out.println("Nous avons un nouveau joueur la liste des connection est a : "
+						+ gameSession.getSocketSessions().size());
 
 			}
 

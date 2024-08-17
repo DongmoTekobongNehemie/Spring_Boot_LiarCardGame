@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.web.socket.TextMessage;
 
-import com.nehms.game.entities.Card;
-import com.nehms.game.entities.GameSession;
-import com.nehms.game.entities.GameStep;
-import com.nehms.game.entities.Message;
-import com.nehms.game.entities.Pattern;
-import com.nehms.game.entities.Player;
+import com.nehms.game.entites.Card;
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.GameStep;
+import com.nehms.game.entites.Message;
+import com.nehms.game.entites.Pattern;
+import com.nehms.game.entites.Player;
 
 public class PlayCard {
 

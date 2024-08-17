@@ -1,8 +1,8 @@
 package com.nehms.game.controllers;
 
-import com.nehms.game.entities.GameSession;
-import com.nehms.game.entities.GameStep;
-import com.nehms.game.entities.Message;
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.GameStep;
+import com.nehms.game.entites.Message;
 public class Winner {
 
     private final BrosdCast brosdCast = new BrosdCast();

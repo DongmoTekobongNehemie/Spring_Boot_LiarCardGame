@@ -7,7 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.nehms.game.controllers.interfaces.Brosdcastable;
-import com.nehms.game.entities.Card;
+import com.nehms.game.entites.Card;
 
 public final class BrosdCast implements  Brosdcastable {
 	

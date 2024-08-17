@@ -7,8 +7,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entities.GameSession;
-import com.nehms.game.entities.GameStep;
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.GameStep;
 import com.nehms.game.exceptions.GameSessionNullException;
 import com.nehms.game.services.ProcessAskOkToPlay;
 import com.nehms.game.services.ProcessContestation;

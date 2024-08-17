@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.nehms.game.controllers.PlayerCreator;
 import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entities.GameSession;
+import com.nehms.game.entites.GameSession;
 import com.nehms.game.exceptions.GameSessionNullException;
 
 public class ProcessCreatePlayers implements Ochestrater {

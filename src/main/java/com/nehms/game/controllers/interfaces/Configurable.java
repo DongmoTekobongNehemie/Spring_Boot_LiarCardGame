@@ -2,8 +2,8 @@ package com.nehms.game.controllers.interfaces;
 
 import java.util.List;
 
-import com.nehms.game.entities.Card;
-import com.nehms.game.entities.Player;
+import com.nehms.game.entites.Card;
+import com.nehms.game.entites.Player;
 
 public interface Configurable {
 	

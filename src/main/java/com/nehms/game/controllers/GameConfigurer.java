@@ -1,7 +1,7 @@
 package com.nehms.game.controllers;
 
 import com.nehms.game.controllers.interfaces.Configurable;
-import com.nehms.game.entities.GameSession;
+import com.nehms.game.entites.GameSession;
 
 public class GameConfigurer {
 	

@@ -11,8 +11,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.nehms.game.controllers.BrosdCast;
 import com.nehms.game.controllers.Jsonation;
-import com.nehms.game.entities.Message;
-import com.nehms.game.entities.Player;
+import com.nehms.game.entites.Message;
+import com.nehms.game.entites.Player;
 import com.nehms.game.play.Game;
 
 import lombok.AllArgsConstructor;
@@ -102,3 +102,4 @@ public class Communication extends TextWebSocketHandler {
 		}
 	}
 }
+

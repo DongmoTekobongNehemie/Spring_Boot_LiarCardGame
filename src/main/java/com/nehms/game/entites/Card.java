@@ -1,4 +1,4 @@
-package com.nehms.game.entities;
+package com.nehms.game.entites;
 
 import java.util.Objects;
 

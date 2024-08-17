@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.socket.WebSocketSession;
 
-import com.nehms.game.entities.Card;
+import com.nehms.game.entites.Card;
 
 public interface Brosdcastable {
 	

@@ -2,7 +2,7 @@ package com.nehms.game.controllers.interfaces;
 
 import java.io.IOException;
 
-import com.nehms.game.entities.GameSession;
+import com.nehms.game.entites.GameSession;
 import com.nehms.game.exceptions.GameSessionNullException;
 
 public interface Ochestrater {
