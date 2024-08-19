@@ -12,11 +12,11 @@
 </head>
 
 <body>
-	<div class="container">
+	<div class="container" id="acceuil">
 		<div class="joinRoom">
 			<form>
 				<input type="text" class="inputKey" id="inputKey" placeholder="enter the room key">
-				<button class="btn-join" onclick="findRoom()"> Join Room </button>
+				<button class="btn-join" onclick="findRoom(event)"> Join Room </button>
 			</form>
 		</div>
 
@@ -29,8 +29,140 @@
 
 			<span class="badge" id="roomKeyDisplay"><img class="share" src="/images/share.png"></span>
 		</div>
+	</div>
+	
+	<div id="game">
+
+		<nav>
+			<div class="logo">LairCardGame</div>
+
+			<div class="search">
+				<form>
+
+					<button onclick="contradict(event)" class="contra">contest 🚨</button>
+
+					<span class="namePlayer">
+						<p id="name">Joueur 1</p>
+					</span>
+
+					<div class="select-container">
+						<select class="select-box">
+							<option value="COEUR">Coeur</option>
+							<option value="PIQUE">Pique</option>
+							<option value="TREFLE">Trefle</option>
+							<option value="CARREAU">Carreau</option>
+						</select>
+
+						<div class="icon-container">
+							<i class="fa-solid fa-sort-down"></i>
+						</div>
+					</div>
+					<button onclick="gameplay(event)">Play ♠️ </button>
+
+				</form>
+			</div>
+		</nav>
+
+		<div class="main">
+
+			<div class="cardsBox">
+				<div class="list"><!--
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="/images/poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+					<div class="card">
+						<input type="radio" name="carte" class="valid">
+						<img src="\images\poker.png" alt="" class="ing">
+						<p class="pattern">Pique</p>
+						<p class="numero">2</p>
+					</div>
+
+					 Ajouter des cartes 
+
+				--></div>
+			</div>
+
+			<div class="currnetCard">
+				<div class="cardplay">
+					<img src="\images\poker.png" alt="" class="ing">
+					<p class="patternofcardplay" id="patternofcardplay">Pique</p>
+					<p class="numeroofcardplay" id="numeroofcardplay">2</p>
+				</div>
+
+				<span class="badgePattern">
+					<p id="badgePattern">Pique</p>
+				</span>
+			</div>
+		</div>
 
 	</div>
+	
+	
+	<div id="toastBox"></div>
+
 
 	<script src="/javascript/room.js"></script>
 

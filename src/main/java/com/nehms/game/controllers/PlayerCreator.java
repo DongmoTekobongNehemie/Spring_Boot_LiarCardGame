@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 
+import com.nehms.game.controllers.interfaces.Brosdcastable;
 import com.nehms.game.entites.GameSession;
 import com.nehms.game.entites.GameStep;
 import com.nehms.game.entites.Message;
@@ -14,15 +15,14 @@ import com.nehms.game.entites.Player;
 public class PlayerCreator {
 
 	public void createPlayers(GameSession gameSession) throws IOException {
-		
 
-		BrosdCast brosdCast = new BrosdCast();
+		Brosdcastable brosdCast = new Broadcast();
 
 		Message objectResponse = new Message();
 
 		Jsonation jsonation = new Jsonation();
 
-		if (gameSession.getGameStep().equals(GameStep.CREATE_PLAYER) ) {
+		if (gameSession.getGameStep().equals(GameStep.CREATE_PLAYER)) {
 
 			Player player = new Player("Player " + (gameSession.getPlayers().size() + 1));
 
@@ -32,7 +32,7 @@ public class PlayerCreator {
 					&& gameSession.getPlayers().size() < gameSession.getMaxPlayer()) {
 
 				gameSession.getPlayers().add(player);
-				
+
 				gameSession.getSocketSessions().add(gameSession.getCurrentSession());
 
 				objectResponse.setBody("Bienvenue "
@@ -41,9 +41,9 @@ public class PlayerCreator {
 				objectResponse.setType("creation de joueur");
 
 				gameSession.getCurrentSession().sendMessage(new TextMessage(jsonation.convertToJson(objectResponse)));
-				
+
 				objectResponse.setType("");
-				
+
 				System.out.println("Nous avons un nouveau joueur la liste des connection est a : "
 						+ gameSession.getSocketSessions().size());
 
@@ -52,21 +52,19 @@ public class PlayerCreator {
 			if (gameSession.getPlayers().size() == gameSession.getMaxPlayer()) {
 
 				objectResponse.setBody("Are you ready to play ?");
-				
+
 				objectResponse.setType("are you ready ?");
 
 				brosdCast.broadcastMessage(jsonation.convertToJson(objectResponse), gameSession.getSocketSessions());
 				gameSession.setGameStep(GameStep.ACCEPT_TO_PLAY);
+				
+				System.out.println("nous somme a la phase de "+gameSession.getGameStep());
 				return;
 			}
 		}
 
-		if (gameSession.getGameStep() != (GameStep.CREATE_PLAYER)
-				&& !gameSession.getSocketSessions().contains(gameSession.getCurrentSession())) {
-			gameSession.getCurrentSession().sendMessage(new TextMessage("The session game it's full !!"));
-			gameSession.getCurrentSession().close();
-		}
-			
+		System.out.println("dans la liste des socket "+gameSession.getSocketSessions().size()+" dans la liste de players "+gameSession.getPlayers().size());;
+		
 	}
 
 }

@@ -5,7 +5,7 @@ import com.nehms.game.entites.GameStep;
 import com.nehms.game.entites.Message;
 public class Winner {
 
-    private final BrosdCast brosdCast = new BrosdCast();
+    private final Broadcast broadcast = new Broadcast();
 
     public void checkWinner(GameSession gameSession) {
     	
@@ -21,7 +21,7 @@ public class Winner {
                 String winnerMessage = "Le gagnant du jeu est " + gameSession.getPlayers().get(i).getNamePlayer() + " 🎉🎉🎉🎉🎉";
                 message.setBody(winnerMessage);
                 message.setType("gagnant");
-                brosdCast.broadcastMessage(jsonation.convertToJson(message), gameSession.getSocketSessions());
+                broadcast.broadcastMessage(jsonation.convertToJson(message), gameSession.getSocketSessions());
                 gameSession.setGameStep(GameStep.END);
                 
                 return;

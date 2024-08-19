@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.socket.TextMessage;
 
+import com.nehms.game.controllers.interfaces.Brosdcastable;
 import com.nehms.game.entites.Card;
 import com.nehms.game.entites.GameSession;
 import com.nehms.game.entites.GameStep;
@@ -16,7 +17,7 @@ public class PlayCard {
 
 	public void playCard(GameSession gameSession) throws IOException {
 
-		BrosdCast brosdCast = new BrosdCast();
+		Brosdcastable brosdCast = new Broadcast();
 
 		Message message = new Message();
 		Jsonation jsonation = new Jsonation();
@@ -60,7 +61,6 @@ public class PlayCard {
 								.sendMessage(new TextMessage(jsonation.convertToJson(message)));
 					}
 
-					
 					message.setBody("vous venez de jouer la carte [ "
 							+ gameSession.getCurrentcard().getNumber() +", "+gameSession.getCurrentcard().getPattern()+ " ] et vous avez dit " + patternplay);
 					

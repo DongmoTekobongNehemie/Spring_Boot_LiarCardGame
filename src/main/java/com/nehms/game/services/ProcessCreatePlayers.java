@@ -2,9 +2,8 @@ package com.nehms.game.services;
 
 import java.io.IOException;
 
-import com.nehms.game.controllers.PlayerCreator;
 import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.SocketGestionner;
 import com.nehms.game.exceptions.GameSessionNullException;
 
 public class ProcessCreatePlayers implements Ochestrater {
@@ -17,15 +16,15 @@ public class ProcessCreatePlayers implements Ochestrater {
 	}
 
 	@Override
-	public void processTheCurrentState(GameSession gameSession) throws GameSessionNullException, IOException {
-		
-		if(gameSession==null) {
-			throw new GameSessionNullException();
-		}
-		
-		PlayerCreator playerCreator = new PlayerCreator();
-		playerCreator.createPlayers(gameSession);		
-	
+	public void processTheCurrentState(SocketGestionner gameSession) throws GameSessionNullException, IOException {
+//		
+//		if(gameSession==null) {
+//			throw new GameSessionNullException();
+//		}
+//		
+//		PlayerCreator playerCreator = new PlayerCreator();
+//		playerCreator.createPlayers(gameSession);		
+//	
 	}
 
 }

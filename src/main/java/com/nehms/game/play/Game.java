@@ -7,12 +7,12 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entites.GameSession;
-import com.nehms.game.entites.GameStep;
+import com.nehms.game.entites.SocketGestionner;
 import com.nehms.game.exceptions.GameSessionNullException;
 import com.nehms.game.services.ProcessAskOkToPlay;
 import com.nehms.game.services.ProcessContestation;
-import com.nehms.game.services.ProcessCreatePlayers;
+import com.nehms.game.services.ProcessCreateRoom;
+import com.nehms.game.services.ProcessJoinRoom;
 import com.nehms.game.services.ProcessPlayCard;
 
 import lombok.Getter;
@@ -25,27 +25,30 @@ import lombok.Setter;
 @Getter
 public class Game {
 
-	private GameSession gameSession = new GameSession();
+	private SocketGestionner socketGestionner = new SocketGestionner();
 
 	public void play(WebSocketSession session, TextMessage textMessage) throws GameSessionNullException, IOException {
 
-		Ochestrater ochestraterCreatePlayer = new ProcessCreatePlayers();
 		Ochestrater ochestraterAskToPlay = new ProcessAskOkToPlay();
 		Ochestrater ochestraterPlayCard = new ProcessPlayCard();
 		Ochestrater ochestraterContestation = new ProcessContestation();
+		Ochestrater ochestraterCreateRoom = new ProcessCreateRoom();
+		Ochestrater ochestraterJoinRoom = new ProcessJoinRoom();
 
-		if (textMessage != null && !gameSession.getGameStep().equals(GameStep.CREATE_PLAYER)) {
-			gameSession.setCurrentMessage(textMessage.getPayload());
+		if (textMessage != null) {
+			socketGestionner.setCurrentMessage(textMessage.getPayload());
 		}
 
-		gameSession.setCurrentSession(session);
-		
-			ochestraterCreatePlayer.processTheCurrentState(gameSession);
-			ochestraterAskToPlay.processTheCurrentState(gameSession);
-			ochestraterPlayCard.processTheCurrentState(gameSession);
-			ochestraterContestation.processTheCurrentState(gameSession);
+		socketGestionner.setCurrentSession(session);
+
+		ochestraterCreateRoom.processTheCurrentState(socketGestionner);
+		ochestraterJoinRoom.processTheCurrentState(socketGestionner);
+		ochestraterAskToPlay.processTheCurrentState(socketGestionner);	
+		ochestraterPlayCard.processTheCurrentState(socketGestionner);
+		ochestraterContestation.processTheCurrentState(socketGestionner);
+//			ochestraterAskToPlay.processTheCurrentState(socketGestionner);
+//			ochestraterContestation.processTheCurrentState(socketGestionner);
 
 	}
-	
 
 }

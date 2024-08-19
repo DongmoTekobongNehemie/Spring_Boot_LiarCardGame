@@ -42,6 +42,15 @@ public class Contestation {
                             gameSession.getCurrentPattern(), gameSession.getGameTable(),
                             gameSession.getSocketSessions());
 
+                    message.setBody("Votre main ♠️");
+    				message.setType("CARD");
+
+    				for (int i = 0; i < gameSession.getSocketSessions().size(); i++) {
+    					message.setCards(gameSession.getPlayers().get(i).getHand());
+    					gameSession.getSocketSessions().get(i)
+    							.sendMessage(new TextMessage(jsonation.convertToJson(message)));
+    				}
+                    
                     gameSession.setGameStep(GameStep.PLAY_CARD);
                     
 
@@ -56,7 +65,7 @@ public class Contestation {
 //                    return;g
                 } else {
                 	
-                	message.setBody("ne pouvez pas contester");
+                	message.setType("vous ne pouvez pas contester");
                 	message.setBody("Vous ne pouvez pas vous contester !!✖️✖️");
                 	
                     gameSession.getCurrentSession()
@@ -74,7 +83,6 @@ public class Contestation {
         Message message = new Message();
         Jsonation jsonation = new Jsonation();
         
-
         scheduler.schedule(() -> {
             boolean shouldProceed;
             synchronized (gameSession) {
@@ -86,9 +94,8 @@ public class Contestation {
                 try {
                 	
                 	
-                	message.setBody("perosnne ne conteste");
-                	message.setBody("Personne n'a contesté 😒😒😒");
-                	
+                	message.setType("Personne ne conteste");
+                	message.setBody("personnne n'a contesté 😒😒😒");
                     
                     for (WebSocketSession session : gameSession.getSocketSessions()) {
                         session.sendMessage(new TextMessage(jsonation.convertToJson(message)));
@@ -135,7 +142,7 @@ public class Contestation {
     public void contestPlayer(Player contestPlayer, Player player, Card currentCard, Pattern pattern,
                            List<Card> cardsPlayed, List<WebSocketSession> list) {
 
-        BrosdCast brosdCast = new BrosdCast(); 
+        Broadcast broadcast = new Broadcast(); 
         
         Message message = new Message();
         
@@ -148,7 +155,7 @@ public class Contestation {
             message.setBody("Le joueur " + contestPlayer.getNamePlayer() + " prend les cartes 😂😂😂");
             message.setType("prend les cartes");
             
-            brosdCast.broadcastMessage(jsonation.convertToJson(message) , list);
+            broadcast.broadcastMessage(jsonation.convertToJson(message) , list);
         } else {
             player.getHand().addAll(cardsPlayed);
             cardsPlayed.clear();
@@ -156,7 +163,7 @@ public class Contestation {
             message.setBody("Le joueur " + player.getNamePlayer() + " prend les cartes 😂😂😂");
             message.setType("prend les cartes");
             
-            brosdCast.broadcastMessage(jsonation.convertToJson(message) , list);
+            broadcast.broadcastMessage(jsonation.convertToJson(message) , list);
         }
     }
 }

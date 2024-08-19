@@ -4,45 +4,23 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
+
+@ToString
+@EqualsAndHashCode
 @Getter
 @Setter
-@Table(name = "ROOM")
 public class Room {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long roomId;
-	
-	@Column(unique = true, nullable = false)
+	private GameSession gameSession;
+
+
 	private String roomKey;
 
-	@PrePersist
-	public void generateRoomKey() {
-		String uniqueString = UUID.randomUUID().toString() + System.currentTimeMillis();
-		try {
-			this.roomKey = generateSHAKey(uniqueString);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
 	public static String generateSHAKey(String input) throws NoSuchAlgorithmException {
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
@@ -54,6 +32,18 @@ public class Room {
 			hexString.append(hex);
 		}
 		return hexString.toString().substring(0, 10);
+	}
+
+	public Room() {
+		String uniqueString = UUID.randomUUID().toString() + System.currentTimeMillis();
+
+		try {
+			this.setRoomKey(generateSHAKey(uniqueString));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		this.setGameSession(new GameSession());
 	}
 
 }

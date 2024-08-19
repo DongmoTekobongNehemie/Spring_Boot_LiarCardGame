@@ -36,6 +36,7 @@ public class GameSession {
 	private int nbreTour;
 	private int indexplayers;
 	private String message;
+	private int PassedtourIndex;
 	private boolean deconnectable;
 
 	public GameSession() {
@@ -60,6 +61,7 @@ public class GameSession {
 		this.setIndexplayers(0);
 		this.setMessage("");
 		this.setDeconnectable(false);
+		this.setPassedtourIndex(0);
 	}
 	
 	public void reset() {
@@ -84,7 +86,8 @@ public class GameSession {
 		this.setIndexplayers(0);
 		this.setMessage("");
 		this.setDeconnectable(false);
-		
+		this.setPassedtourIndex(0);
+
 	}
 
 }

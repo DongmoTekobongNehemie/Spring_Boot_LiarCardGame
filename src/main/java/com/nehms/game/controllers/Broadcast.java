@@ -9,7 +9,7 @@ import org.springframework.web.socket.WebSocketSession;
 import com.nehms.game.controllers.interfaces.Brosdcastable;
 import com.nehms.game.entites.Card;
 
-public final class BrosdCast implements  Brosdcastable {
+public final class Broadcast implements  Brosdcastable {
 	
 	@Override
 	public void broadcastMessage(String message, List<WebSocketSession> sessions) {
