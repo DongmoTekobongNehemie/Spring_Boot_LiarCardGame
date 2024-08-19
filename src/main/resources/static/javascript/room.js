@@ -1,5 +1,5 @@
-let socket = new WebSocket("ws://localhost:8080/game");
-
+let socket = new WebSocket("https://liarcardgame.onrender.com/game");
+//ws://localhost:8080/game
 socket.onopen = function(event) {
 	console.log("WebSocket is open now.");
 };
