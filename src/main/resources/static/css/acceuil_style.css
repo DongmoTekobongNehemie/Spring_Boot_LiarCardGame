@@ -1,0 +1,578 @@
+/* Style général déjà appliqué 
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+*/
+#game{
+	display: none;
+}
+
+
+/* Conteneur principal */
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+/* Style des sections de la page */
+.joinRoom, .createRoom {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style pour le formulaire d'entrée de clé */
+.inputKey {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Style pour les boutons */
+.btn-join, .btn-createRoom {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-join:hover, .btn-createRoom:hover {
+    background-color: #0056b3;
+}
+
+/* Style pour le badge */
+.badge {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #28a745;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.share{
+	width: 20px;
+	height: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .joinRoom, .createRoom {
+        width: 100%;
+    }
+}
+
+
+
+/* css de game.html*/
+
+
+
+/* Styles des notifications */
+#toastBox {
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	overflow: hidden;
+	padding: 20px;
+}
+
+.toast {
+	width: 400px;
+	height: 80px;
+	background: #fff;
+	font-weight: 500;
+	margin: 15px 0;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	display: flex;
+	align-items: center;
+	position: relative;
+	transform: translateX(100%);
+	animation: moveleft 0.5s linear forwards;
+}
+
+@keyframes moveleft {
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.toast i {
+	margin: 0 20px;
+	font-size: 35px;
+	color: green;
+}
+
+.toast.error i {
+	color: red;
+}
+
+.toast.invalid i {
+	color: orange;
+}
+
+.toast::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 5px;
+	background: green;
+	animation: anim 5s linear forwards;
+}
+
+@keyframes anim {
+	100% {
+		width: 0;
+	}
+}
+
+.toast.error::after {
+	background: red;
+}
+
+.toast.invalid::after {
+	background: orange;
+}
+
+
+#toastBox {
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	overflow: hidden;
+	padding: 20px;
+}
+
+.toast {
+	width: 400px;
+	height: 80px;
+	background: #fff;
+	font-weight: 500;
+	margin: 15px 0;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	display: flex;
+	align-items: center;
+	position: relative;
+	transform: translateX(100%);
+	animation: moveleft 0.5s linear forwards;
+}
+
+@keyframes moveleft {
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.toast i {
+	margin: 0 20px;
+	font-size: 35px;
+	color: green;
+}
+
+.toast.error i {
+	color: red;
+}
+
+.toast.invalid i {
+	color: orange;
+}
+
+.toast::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 5px;
+	background: green;
+	animation: anim 5s linear forwards;
+}
+
+@keyframes anim {
+	100% {
+		width: 0;
+	}
+}
+
+.toast.error::after {
+	background: red;
+}
+
+.toast.invalid::after {
+	background: orange;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+nav {
+    width: 100%;
+    height: 75px;
+    background-color: #0d47a1;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 50px;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.menu {
+    width: 65%;
+    display: flex;
+    justify-content: right;
+    list-style: none;
+}
+
+.menu li {
+    margin-left: 20px;
+}
+.menu li a {
+    font-size: 19px;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.menu li a:hover {
+    color: #ccc;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    margin-right: 0;
+}
+
+.search form {
+    display: flex;
+    margin: 0;
+}
+
+.search input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.search input:hover {
+    border: 1px solid #72a0d4;
+}
+
+.search button {
+    padding: 10px;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    color: #ccc;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.search button:hover {
+    background-color: #ccc;
+    color: #fff;
+}
+
+.select-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    min-width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.select-box {
+    border-radius: 5px;
+    border: none;
+    appearance: none;
+    padding: 0 15px 0 15px;
+    width: 100%;
+    color: #0d47a1;
+    background-color: #ffffff;
+    font-size: 20px;
+    outline: none;
+}
+
+.select-container .icon-container {
+    width: 50px;
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eeeeee;
+}
+
+.icon-container{
+    pointer-events: none;
+}
+
+.icon-container .fa-sort-down {
+    font-size: 24px;
+    color: #0d47a1;
+}
+
+/*------------main ------------*/
+
+.main {
+    display: flex;
+    width: 100%;
+    height: calc(100% - 75px);
+    margin-top: 75px;
+    position: relative;
+}
+
+.cardsBox {
+    flex: 4;
+    background-color: #f0f0f0;
+    margin: 20px;
+}
+
+.currnetCard {
+    flex: 1;
+    background-color: #ffffff;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 colonnes */
+    gap: 10px; /* Espace entre les cartes */
+    padding: 20px;
+}
+
+.card {
+    position: relative;
+    width: 150px;
+    height: 200px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    background-color: #4e3f3f;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card .valid {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    z-index: 10;
+}
+
+.numero, .pattern {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.numero {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.contra{
+	margin-right: 20px;
+}
+
+.pattern {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.valid {
+    border: 2px solid #0d47a1; /* Bordure colorée */
+    border-radius: 5px;
+    background-color: #fff; /* Couleur de fond avant sélection */
+    appearance: none;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.valid:checked {
+    background-color: #0d47a1; /* Couleur de fond après sélection */
+    color: #fff; /* Couleur du coche (si vous choisissez d'utiliser la propriété color) */
+}
+
+.valid:checked::before {
+    content: "✔"; /* La croix par défaut ou coche peut être ajoutée ici si nécessaire */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px; /* Taille du coche, ajustez si nécessaire */
+}
+
+.ing {
+    width: 50px; /* Réduit la taille de l'image de moitié */
+    height: auto; /* Garde les proportions de l'image */
+}
+
+.currnetCard {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: flex-start; /* Aligne en haut verticalement */
+    height: 100%; /* S'assure que la carte soit centrée dans toute la hauteur de la div */
+    padding-top: 20px; /* Ajoute un espace au-dessus si nécessaire */
+}
+
+.cardplay {
+    margin-top: 0; /* Supprime tout espacement supplémentaire en haut */
+}
+
+
+.cardplay {
+    position: relative;
+    width: 150px;
+    height: 200px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    background-color: #4e3f3f;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardplay .numeroofcardplay, .cardplay .patternofcardplay {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.cardplay .numeroofcardplay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.cardplay .patternofcardplay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.cardplay .ing {
+    width: 50px; /* Ajuste la taille de l'image */
+    height: auto;
+}
+.currnetCard {
+    display: flex;
+    flex-direction: column; /* Aligne les éléments verticalement */
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.cardplay {
+    margin-bottom: 10px; /* Ajoute un espace entre la carte et le badge */
+}
+
+.badgePattern {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px; /* Même largeur que la carte */
+    height: 50px; /* Ajustez cette valeur selon vos besoins */
+    background-color: #0d47a1; /* Couleur de fond du badge */
+    color: #fff; /* Couleur du texte */
+    border-radius: 8px; /* Arrondit les coins du badge */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour un effet de badge */
+}
+
+.badgePattern p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.namePlayer{
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    width: 150px; /* Même largeur que la carte */
+    height: 50px; /* Ajustez cette valeur selon vos besoins */
+    background-color: #ffffff; /* Couleur de fond du badge */
+    color: #0d47a1; /* Couleur du texte */
+    border-radius: 8px; /* Arrondit les coins du badge */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour un effet de badge */
+
+}
+
+
+
