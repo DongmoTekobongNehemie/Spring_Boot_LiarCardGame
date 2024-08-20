@@ -2,6 +2,7 @@ package com.nehms.game.entites;
 
 import java.util.Objects;
 
+import com.nehms.game.valueobjets.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

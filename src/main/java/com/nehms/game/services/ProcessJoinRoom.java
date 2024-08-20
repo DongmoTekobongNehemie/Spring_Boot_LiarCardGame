@@ -1,70 +1,101 @@
 package com.nehms.game.services;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.Player;
+import com.nehms.game.entites.Room;
+import com.nehms.game.entites.SocketManager;
+import com.nehms.game.util.Broadcaster;
+import com.nehms.game.util.Converter;
+import com.nehms.game.util.SimpleBroadcaster;
+import com.nehms.game.valueobjets.GameStep;
+import com.nehms.game.valueobjets.Message;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 
-import com.nehms.game.controllers.Jsonation;
-import com.nehms.game.controllers.PlayerCreator;
-import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entites.Message;
-import com.nehms.game.entites.Room;
-import com.nehms.game.entites.SocketGestionner;
-import com.nehms.game.exceptions.GameSessionNullException;
+import java.io.IOException;
 
-public class ProcessJoinRoom implements Ochestrater {
+@Component
+public class ProcessJoinRoom implements Orchestrator {
 
-	Ochestrater ochestraterJoinRoom;
+    private final Converter<Object, String> jsonConverter;
 
-	@Override
-	public void nextOchestrater(Ochestrater ochestrater) {
-		this.ochestraterJoinRoom = ochestrater;
-	}
+    public ProcessJoinRoom(Converter<Object, String> jsonConverter) {
+        this.jsonConverter = jsonConverter;
+    }
 
-	@Override
+    @Override
+    public void processTheCurrentState(SocketManager socketManager) throws IOException {
 
-	public void processTheCurrentState(SocketGestionner socketGestionner) throws GameSessionNullException, IOException {
+        String checkRoomKey = socketManager.getCurrentMessage();
+        Message message = new Message();
 
-		String checkRomkey = socketGestionner.getCurrentMessage();
-		PlayerCreator playerCreator = new PlayerCreator();
-		Message message = new Message();
-		Jsonation jsonation = new Jsonation();
-		if (checkRomkey != null) {
+        if (checkRoomKey == null)
+            return;
 
-			for (Room room : socketGestionner.getRoomsOftheSocket()) {
-				if (room.getRoomKey().equals(checkRomkey)) {
-					
-					if(room.getGameSession().getSocketSessions().size()==room.getGameSession().getMaxPlayer()) {
-						message.setBody("la sesseion de la socket est full !! ");
-						message.setType("full");
-						socketGestionner.getCurrentSession().sendMessage(new TextMessage(jsonation.convertToJson(message)));
-						return;
-					}
-					
-					room.getGameSession().setCurrentSession(socketGestionner.getCurrentSession());
-					room.getGameSession().setCurrentMessage(socketGestionner.getCurrentMessage());
-					playerCreator.createPlayers(room.getGameSession());
-					
-					socketGestionner.setCurrentRoomIndex(findTheIndexOfRoom(checkRomkey, socketGestionner.getRoomsOftheSocket()));
-					
-					message.setType("gameok");
-					message.setBody("");
-					room.getGameSession().getCurrentSession().sendMessage(new TextMessage(jsonation.convertToJson(message)));
-					System.out.println(message);
-				}
-			}
-		}
-	}
-	
+        for (Room room : socketManager.getSocketRooms()) {
+            if (!room.getRoomKey().equals(checkRoomKey))
+                return;
 
-	public int findTheIndexOfRoom(String keyroom, List<Room> rooms) {
-		for (int i = 0; i < rooms.size(); i++) {
-			if (rooms.get(i).getRoomKey().equals(keyroom)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+            if (room.getGameSession().getSocketSessions().size() == room.getGameSession().getMaxPlayer()) {
+                message.setBody("la session de la socket est full !! ");
+                message.setType("full");
+                socketManager.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+                return;
+            }
+
+            room.getGameSession().setCurrentSession(socketManager.getCurrentSession());
+            room.getGameSession().setCurrentMessage(socketManager.getCurrentMessage());
+            createPlayers(room.getGameSession());
+
+            socketManager.setCurrentRoomIndex(findTheIndexOfRoom(checkRoomKey, socketManager.getSocketRooms()));
+
+            message.setType("gameOk");
+            message.setBody("");
+            room.getGameSession().getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+        }
+    }
+
+    private void createPlayers(GameSession gameSession) throws IOException {
+
+        Broadcaster broadcast = new SimpleBroadcaster();
+
+        Message objectResponse = new Message();
+
+        if (!GameStep.CREATE_PLAYER.equals(gameSession.getGameStep()))
+            return;
+
+        Player player = new Player("Player " + (gameSession.getPlayers().size() + 1));
+
+        objectResponse.setNamePlayer("Player " + (gameSession.getPlayers().size() + 1));
+
+        if (!gameSession.getSocketSessions().contains(gameSession.getCurrentSession())
+                && gameSession.getPlayers().size() < gameSession.getMaxPlayer()) {
+
+            gameSession.getPlayers().add(player);
+
+            gameSession.getSocketSessions().add(gameSession.getCurrentSession());
+
+            objectResponse.setBody("Bienvenue "
+                    + gameSession.getPlayers().get(gameSession.getSocketSessions().size() - 1).getNamePlayer());
+
+            objectResponse.setType("creation de joueur");
+
+            gameSession.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(objectResponse)));
+
+            objectResponse.setType("");
+
+        }
+
+        if (gameSession.getPlayers().size() == gameSession.getMaxPlayer()) {
+
+            objectResponse.setBody("Are you ready to play ?");
+
+            objectResponse.setType("are you ready ?");
+
+            broadcast.broadcastMessage(jsonConverter.convert(objectResponse), gameSession.getSocketSessions());
+            gameSession.setGameStep(GameStep.ACCEPT_TO_PLAY);
+        }
+
+    }
 
 }

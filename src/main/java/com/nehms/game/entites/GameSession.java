@@ -1,14 +1,17 @@
 package com.nehms.game.entites;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
-
+import com.nehms.game.services.visitors.ConfigVisitor;
+import com.nehms.game.valueobjets.GameStep;
+import com.nehms.game.valueobjets.Pattern;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,16 +31,16 @@ public class GameSession {
 	private String currentMessage;
 	private WebSocketSession currentSession;
 	private List<WebSocketSession> socketSessions;
-	private int nbreOkfOk;
+	private int numberOfValidation;
 	private List<WebSocketSession> socketOfOk;
-	private int currentindexOfsessionCard;
+	private int currentIndexOfSessionCard;
 	private Card currentcard;
 	private boolean okToPlay;
-	private int nbreTour;
-	private int indexplayers;
+	private int lap;
+	private int playersIndexes;
 	private String message;
-	private int PassedtourIndex;
-	private boolean deconnectable;
+	private int indexLapFinished;
+	private boolean isDisconnected;
 
 	public GameSession() {
 
@@ -53,15 +56,15 @@ public class GameSession {
 		this.setCurrentSession(null);
 		this.setSocketSessions(new ArrayList<>());
 		this.setSocketOfOk(new ArrayList<>());
-		this.setNbreOkfOk(0);
-		this.setCurrentindexOfsessionCard(0);
+		this.setNumberOfValidation(0);
+		this.setCurrentIndexOfSessionCard(0);
 		this.setCurrentcard(new Card());
 		this.setOkToPlay(false);
-		this.setNbreTour(0);
-		this.setIndexplayers(0);
+		this.setLap(0);
+		this.setPlayersIndexes(0);
 		this.setMessage("");
-		this.setDeconnectable(false);
-		this.setPassedtourIndex(0);
+		this.setDisconnected(false);
+		this.setIndexLapFinished(0);
 	}
 	
 	public void reset() {
@@ -78,16 +81,22 @@ public class GameSession {
 		this.setCurrentSession(null);
 		this.setSocketSessions(new ArrayList<>());
 		this.setSocketOfOk(new ArrayList<>());
-		this.setNbreOkfOk(0);
-		this.setCurrentindexOfsessionCard(0);
+		this.setNumberOfValidation(0);
+		this.setCurrentIndexOfSessionCard(0);
 		this.setCurrentcard(new Card());
 		this.setOkToPlay(false);
-		this.setNbreTour(0);
-		this.setIndexplayers(0);
+		this.setLap(0);
+		this.setPlayersIndexes(0);
 		this.setMessage("");
-		this.setDeconnectable(false);
-		this.setPassedtourIndex(0);
+		this.setDisconnected(false);
+		this.setIndexLapFinished(0);
 
+	}
+
+	public void configure(ConfigVisitor configVisitor) {
+		configVisitor.createCards(this);
+		configVisitor.mixCards(this);
+		configVisitor.distribute(this);
 	}
 
 }

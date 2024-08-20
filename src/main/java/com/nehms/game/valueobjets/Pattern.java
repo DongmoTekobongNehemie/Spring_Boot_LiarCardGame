@@ -1,4 +1,4 @@
-package com.nehms.game.entites;
+package com.nehms.game.valueobjets;
 
 public enum Pattern {
 	

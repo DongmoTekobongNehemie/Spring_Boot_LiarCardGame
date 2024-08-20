@@ -1,53 +1,40 @@
 package com.nehms.game.services;
 
-import java.io.IOException;
-
+import com.nehms.game.entites.Room;
+import com.nehms.game.entites.SocketManager;
+import com.nehms.game.util.JsonConverter;
+import com.nehms.game.valueobjets.Message;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 
-import com.nehms.game.controllers.Jsonation;
-import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entites.Message;
-import com.nehms.game.entites.Room;
-import com.nehms.game.entites.SocketGestionner;
-import com.nehms.game.exceptions.GameSessionNullException;
+import java.io.IOException;
 
-public class ProcessCreateRoom implements Ochestrater {
+@Component
+public class ProcessCreateRoom implements Orchestrator {
 
-	 Ochestrater ochestraterCreateRoom;
-	
-	@Override
-	public void nextOchestrater(Ochestrater ochestrater) {
-		this.ochestraterCreateRoom = ochestrater;
-	}
+    @Override
+    public void processTheCurrentState(SocketManager socketManager) throws IOException {
 
-	@Override
-	public void processTheCurrentState(SocketGestionner socketGestionner) throws GameSessionNullException, IOException {
-		
-		if(socketGestionner.getCurrentMessage()==null) {
-			return;
-		}
-		
-		
-		if(socketGestionner.getCurrentMessage().equals("createRoom")) {
-			Jsonation jsonation = new Jsonation();
-		Message message = new Message();
-		Room room = new Room();	
-		message.setBody(room.getRoomKey());
-		message.setType("roomkey");
+        if (socketManager.getCurrentMessage() == null)
+            return;
 
-		System.out.println(room); 
-		
-		if(!socketGestionner.getRoomsOftheSocket().contains(room)) {
-			socketGestionner.getRoomsOftheSocket().add(room);
-			socketGestionner.getCurrentSession().sendMessage(new TextMessage(jsonation.convertToJson(message)));
-			message.setType("roomCreated");
-			message.setBody("Bienvenue Veillez rejoindre une partie ou creer un salon de jeu");
-			socketGestionner.getCurrentSession().sendMessage(new TextMessage(jsonation.convertToJson(message)));
-		}
-		
-		}
-		
-		
-	}
+        if (!"createRoom".equals(socketManager.getCurrentMessage()))
+            return;
+
+        JsonConverter jsonConverter = new JsonConverter();
+        Message message = new Message();
+        Room room = new Room();
+        message.setBody(room.getRoomKey());
+        message.setType("roomKey");
+
+        if (!socketManager.getSocketRooms().contains(room)) {
+            socketManager.getSocketRooms().add(room);
+            socketManager.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+            message.setType("roomCreated");
+            message.setBody("Bienvenue Veillez rejoindre une partie ou créer un salon de jeu");
+            socketManager.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+        }
+
+    }
 
 }

@@ -1,63 +1,50 @@
 package com.nehms.game.socket;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.nehms.game.controllers.GameController;
+import com.nehms.game.entites.Player;
+import com.nehms.game.entites.Room;
+import com.nehms.game.util.Broadcaster;
+import com.nehms.game.util.Converter;
+import com.nehms.game.valueobjets.Message;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.nehms.game.controllers.Broadcast;
-import com.nehms.game.controllers.Jsonation;
-import com.nehms.game.entites.Message;
-import com.nehms.game.entites.Player;
-import com.nehms.game.entites.Room;
-import com.nehms.game.play.Game;
+import java.util.ArrayList;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@AllArgsConstructor
 @Component
-@Getter
-@Controller
-@Setter
 public class Communication extends TextWebSocketHandler {
 
-	private final Game game;
+	private final GameController gameController;
+	private final Converter<Object, String> jsonConverter;
+	private final Broadcaster broadcaster;
 
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public Communication(GameController gameController,
+						 Converter<Object, String> jsonConverter,
+						 Broadcaster broadcaster) {
+        this.gameController = gameController;
+        this.jsonConverter = jsonConverter;
+        this.broadcaster = broadcaster;
+    }
 
-	}
-
-	@Override
+    @Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		game.play(session, message);
+		gameController.play(session, message);
 	}
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
-		for (Room room : game.getSocketGestionner().getRoomsOftheSocket()) {
+		for (Room room : gameController.getSocketManager().getSocketRooms()) {
 
 				if(room.getGameSession().getSocketSessions().contains(session)) {
-					
-					Jsonation jsonation = new Jsonation();
 
 					Message message = new Message();
 
-					Broadcast broadcast = new Broadcast();
-
-					List<WebSocketSession> sessions = new ArrayList<>();
-
-					List<Player> players = new ArrayList<>();
-
-					int indexofTheLeavePlayer = 0;
+                    int indexofTheLeavePlayer = 0;
 
 					for (int i = 0; i < room.getGameSession().getSocketSessions().size(); i++) {
 
@@ -73,9 +60,9 @@ public class Communication extends TextWebSocketHandler {
 
 					room.getGameSession().getPlayers().remove(room.getGameSession().getPlayers().get(indexofTheLeavePlayer));
 
-					sessions.addAll(room.getGameSession().getSocketSessions());
+                    List<WebSocketSession> sessions = new ArrayList<>(room.getGameSession().getSocketSessions());
 
-					players.addAll(room.getGameSession().getPlayers());
+                    List<Player> players = new ArrayList<>(room.getGameSession().getPlayers());
 
 					room.getGameSession().reset();
 
@@ -85,19 +72,14 @@ public class Communication extends TextWebSocketHandler {
 						
 						i++;
 					}
-					
-//					for (Player player : players) {
-//						
-//						System.out.println("la taille du paquet de carte de chacun "+player.getHand().size());
-//					}
-					
+
 					room.getGameSession().setSocketSessions(sessions);
 
 					room.getGameSession().setPlayers(players);
 
 					message.setType("Reset");
 
-					broadcast.broadcastMessage(jsonation.convertToJson(message), room.getGameSession().getSocketSessions());
+					broadcaster.broadcastMessage(jsonConverter.convert(message), room.getGameSession().getSocketSessions());
 
 					Message message2 = new Message();
 
@@ -107,7 +89,7 @@ public class Communication extends TextWebSocketHandler {
 						message2.setNamePlayer(players.get(j).getNamePlayer());
 						message2.setBody("votre nouvelle identifiant est : " + players.get(j).getNamePlayer());
 						room.getGameSession().getSocketSessions().get(j)
-								.sendMessage(new TextMessage(jsonation.convertToJson(message2)));
+								.sendMessage(new TextMessage(jsonConverter.convert(message2)));
 					}
 
 				}

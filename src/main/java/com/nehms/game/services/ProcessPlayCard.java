@@ -1,62 +1,180 @@
 package com.nehms.game.services;
 
+import com.nehms.game.entites.Card;
+import com.nehms.game.entites.GameSession;
+import com.nehms.game.entites.Player;
+import com.nehms.game.entites.SocketManager;
+import com.nehms.game.util.Broadcaster;
+import com.nehms.game.util.Converter;
+import com.nehms.game.util.Processor;
+import com.nehms.game.valueobjets.GameStep;
+import com.nehms.game.valueobjets.Message;
+import com.nehms.game.valueobjets.Pattern;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+
 import java.io.IOException;
 import java.util.List;
 
-import com.nehms.game.controllers.PlayCard;
-import com.nehms.game.controllers.interfaces.Ochestrater;
-import com.nehms.game.entites.GameStep;
-import com.nehms.game.entites.Room;
-import com.nehms.game.entites.SocketGestionner;
-import com.nehms.game.exceptions.GameSessionNullException;
+@Component
+public class ProcessPlayCard implements Orchestrator {
 
-public class ProcessPlayCard implements Ochestrater {
+    private final Broadcaster broadcaster;
+    private final Processor processor;
+    private final Converter<Object, String> jsonConverter;
 
-	Ochestrater playCardOchestrater;
+    public ProcessPlayCard(Broadcaster broadcaster, Processor processor, Converter<Object, String> jsonConverter) {
+        this.broadcaster = broadcaster;
+        this.processor = processor;
+        this.jsonConverter = jsonConverter;
+    }
 
-	@Override
-	public void nextOchestrater(Ochestrater ochestrater) {
-		this.playCardOchestrater = ochestrater;
-	}
+    @Override
+    public void processTheCurrentState(SocketManager socketManager) throws IOException {
 
-	@Override
-	public void processTheCurrentState(SocketGestionner socketGestionner) throws GameSessionNullException, IOException {
+        String[] message = socketManager.getCurrentMessage().split("-");
 
-		int indice = 0;
-		String[] message = socketGestionner.getCurrentMessage().split("-");
-		System.out.println("a ctte etape " + socketGestionner.getCurrentMessage());
-		System.out.println(message.length);
-////
-		if (message.length == 4) {
-			System.out.println("ok c'est bon");
+        int indice = findTheIndexOfRoom(message[0], socketManager.getSocketRooms());
 
-			indice = findTheIndexOfRoom(message[0], socketGestionner.getRoomsOftheSocket());
+        if (message.length != 4)
+            return;
 
-			// gestion des erreus d'incice important
+        if (!GameStep.PLAY_CARD.equals(socketManager.getSocketRooms().get(indice).getGameSession().getGameStep()))
+            return;
 
-		} else {
-			return;
-		}
-//		
-		if (socketGestionner.getRoomsOftheSocket().get(indice).getGameSession().getGameStep()
-				.equals(GameStep.PLAY_CARD)) {
+        socketManager.getSocketRooms().get(indice).getGameSession().setCurrentSession(socketManager.getCurrentSession());
 
-			PlayCard playCard = new PlayCard();
-			socketGestionner.getRoomsOftheSocket().get(indice).getGameSession().setCurrentSession(socketGestionner.getCurrentSession());
+        socketManager.getSocketRooms().get(indice).getGameSession()
+                .setCurrentMessage(message[1] + "-" + message[2] + "-" + message[3]);
 
-			socketGestionner.getRoomsOftheSocket().get(indice).getGameSession()
-					.setCurrentMessage(message[1] + "-" + message[2] + "-" + message[3]);
-			playCard.playCard(socketGestionner.getRoomsOftheSocket().get(indice).getGameSession());
-			return;
-		}
-	}
+        execute(socketManager.getSocketRooms().get(indice).getGameSession());
 
-	public int findTheIndexOfRoom(String keyroom, List<Room> rooms) {
-		for (int i = 0; i < rooms.size(); i++) {
-			if (rooms.get(i).getRoomKey().equals(keyroom)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+    }
+
+    private void execute(GameSession gameSession) throws IOException {
+
+        Message message = new Message();
+
+        checkWinner(broadcaster, gameSession);
+
+        if (!GameStep.PLAY_CARD.equals(gameSession.getGameStep()))
+            return;
+
+        if (!isPlayerLap(gameSession)) {
+
+            if ("".equals(gameSession.getCurrentMessage()))
+                return;
+
+            message.setBody("ce n'est pas a votre tour de jouer !");
+            message.setType("not your turn");
+
+            gameSession.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+
+            return;
+        }
+
+        if (processor.processingMessage(gameSession.getCurrentMessage()) == null) {
+            gameSession.getCurrentSession().sendMessage(new TextMessage("mauvais format du message"));
+            return;
+        }
+
+
+        String number = processor.processingMessage(gameSession.getCurrentMessage()).getNumber();
+        Pattern pattern = processor.processingMessage(gameSession.getCurrentMessage()).getPattern();
+        Pattern patternPlayed = processor.processingMessage(gameSession.getCurrentMessage()).getPatternPlay();
+
+        gameSession.setCurrentPattern(pattern);
+
+        playOneCard(number, pattern, gameSession.getPlayers().get(getIndexOfCurrentPlayer(gameSession)),
+                gameSession.getGameTable(), gameSession.getCurrentcard());
+
+        gameSession.setCurrentPattern(patternPlayed);
+
+        message.setBody("Votre main ♠️");
+        message.setType("CARD");
+        message.setCurrentCard(new Card(gameSession.getCurrentcard().getPattern(),
+                gameSession.getCurrentcard().getNumber()));
+        message.setCurrentPattern(patternPlayed);
+
+        for (int i = 0; i < gameSession.getSocketSessions().size(); i++) {
+            message.setCards(gameSession.getPlayers().get(i).getHand());
+            gameSession.getSocketSessions().get(i)
+                    .sendMessage(new TextMessage(jsonConverter.convert(message)));
+        }
+
+        message.setBody("vous venez de jouer la carte [ "
+                + gameSession.getCurrentcard().getNumber() + ", " + gameSession.getCurrentcard().getPattern() + " ] et vous avez dit " + patternPlayed);
+
+        message.setType("vous avez jouez");
+
+        gameSession.getCurrentSession().sendMessage(new TextMessage(jsonConverter.convert(message)));
+
+        gameSession.setCurrentPlayer(gameSession.getPlayers().get(getIndexOfCurrentPlayer(gameSession)));
+
+        gameSession.setPlayersIndexes(getIndexOfCurrentPlayer(gameSession));
+
+        gameSession.setCurrentIndexOfSessionCard(
+                (gameSession.getCurrentIndexOfSessionCard() + 1) % gameSession.getMaxPlayer());
+
+        gameSession.setLap((gameSession.getLap() + 1));
+
+        if (gameSession.getLap() >= 4) {
+
+            gameSession.setGameStep(GameStep.CONTESTATION);
+
+
+            message.setType("voulez-vous contester ?");
+            message.setBody("voulez-vous contester le pattern ?");
+
+            broadcaster.broadcastMessage(jsonConverter.convert(message), gameSession.getSocketSessions());
+
+        }
+
+
+        message.setType("actuellement le tour");
+        message.setBody("c'est actuellement le tour du " + gameSession.getPlayers()
+                .get(gameSession.getCurrentIndexOfSessionCard()).getNamePlayer());
+
+
+        broadcaster.broadcastMessage(jsonConverter.convert(message), gameSession.getSocketSessions());
+
+        gameSession.setCurrentMessage("");
+    }
+
+    private boolean isPlayerLap(GameSession gameSession) {
+        return getIndexOfCurrentPlayer(gameSession) == gameSession.getCurrentIndexOfSessionCard();
+    }
+
+    private int getIndexOfCurrentPlayer(GameSession gameSession) {
+
+        for (int j = 0; j < gameSession.getSocketSessions().size(); j++) {
+            if (gameSession.getSocketSessions().get(j).equals(gameSession.getCurrentSession())) {
+                return j;
+            }
+        }
+        return 0;
+    }
+
+    private void playOneCard(String numberOfCard, Pattern patternOfCard, Player joueur, List<Card> cardsPlayed,
+                            Card currentCard) {
+
+        int indice = findCardInCards(joueur.getHand(), new Card(patternOfCard, numberOfCard));
+
+        currentCard.setPattern(joueur.getHand().get(indice).getPattern());
+
+        currentCard.setNumber(joueur.getHand().get(indice).getNumber());
+
+        cardsPlayed.add(joueur.getHand().get(indice));
+        joueur.getHand().remove(indice);
+    }
+
+    private int findCardInCards(List<Card> cards, Card card) {
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).equals(card)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

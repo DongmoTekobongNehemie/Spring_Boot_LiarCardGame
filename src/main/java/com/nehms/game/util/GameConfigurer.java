@@ -1,14 +1,15 @@
-package com.nehms.game.controllers;
+package com.nehms.game.util;
+
+import com.nehms.game.entites.Card;
+import com.nehms.game.entites.Player;
+import com.nehms.game.valueobjets.Pattern;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.nehms.game.controllers.interfaces.Configurable;
-import com.nehms.game.entites.Card;
-import com.nehms.game.entites.Pattern;
-import com.nehms.game.entites.Player;
-
-public class ConfigurationsMethods implements Configurable {
+@Component
+public class GameConfigurer implements Configurable {
 	
 	@Override
     public void createCards(List<Card> cards) {
